@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1>TaskMaster</h1>
+    </header>
+
+    <main class="container">
+        <!-- User Authentication -->
+        <section id="auth-section">
+            <h2>Welcome to TaskMaster</h2>
+            <form id="auth-form">
+                <input type="email" id="email" placeholder="Email" required />
+                <input type="password" id="password" placeholder="Password" required />
+                <button id="login-btn">Login</button>
+                <button id="register-btn">Register</button>
+            </form>
+        </section>
+
+        <!-- Task List -->
+        <section id="task-section" class="hidden">
+            <h2>Your Tasks</h2>
+            <div id="task-controls">
+                <input type="text" id="search" placeholder="Search tasks...">
+                <button id="add-task-btn">Add Task</button>
+            </div>
+            <ul id="task-list"></ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 TaskMaster. All rights reserved.</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
