@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addTaskBtn = document.getElementById('add-task-btn');
     const searchInput = document.getElementById('search');
 
-    const API_BASE = 'http://localhost:5000/api/tasks'; // Update with your backend URL
+    const API_BASE = 'https://taskmaster-hole.onrender.com/'; // Update with your backend URL
     let token = ''; // Store JWT token after login
 
     // Mock authentication for simplicity
