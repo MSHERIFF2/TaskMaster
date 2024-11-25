@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>TaskMaster Dashboard</h1>
+        <div class="header-actions">
+            <input type="text" id="search-bar" placeholder="Search tasks...">
+            <button id="logout-btn">Logout</button>
+        </div>
+    </header>
+    <div class="filters">
+        <label for="priority-filter">Priority:</label>
+        <select id="priority-filter">
+            <option value="all">All</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+        <label for="date-filter">Due Date:</label>
+        <input type="date" id="date-filter">
+    </div>
+    <div class="task-list">
+        <!-- Task cards will be dynamically added here -->
+    </div>
+    <button id="add-task-btn">+ Add Task</button>
+    <script src="scripts.js"></script>
+</body>
+</html>
