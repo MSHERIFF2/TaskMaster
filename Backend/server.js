@@ -10,7 +10,10 @@ const taskRoutes = require("./routes/tasks");
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5500',  // Allow the frontend to communicate
+  methods: 'GET,POST,PUT,DELETE',
+}));
 app.use(express.json());
 
 // Routes
@@ -32,5 +35,5 @@ mongoose
 const jwtScrete = process.env.JWT_SECRET;
 
 // Start server
-const PORT = process.env.PORT || 5100;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

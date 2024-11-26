@@ -1,156 +1,154 @@
-
-// Simulated backend data storage for tasks and users (for demonstration purposes only)
-let tasks = [];
-let users = [];
-let currentUser = null;
-
-// Utility to update local storage (if needed for persistence in this demo)
-function saveToLocalStorage() {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    localStorage.setItem("users", JSON.stringify(users));
-}
-
-// Hero Page Logic (if needed, nothing for now)
-
-// Login Page
-if (document.querySelector("#login-form")) {
-    const loginForm = document.querySelector("#login-form");
-    loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = loginForm.querySelector('input[type="email"]').value;
-        const password = loginForm.querySelector('input[type="password"]').value;
-
-        // Simulated login logic
-        const user = users.find((u) => u.email === email && u.password === password);
-        if (user) {
-            currentUser = user;
-            alert("Login successful!");
-            window.location.href = "dashboard.html";
-        } else {
-            alert("Invalid email or password.");
-        }
-    });
-}
+// API base URL for backend
+const API_URL = 'http://localhost:5000/api';  // Update if necessary
+const taskList = document.querySelector(".task-list");
 
 // Register Page
 if (document.querySelector("#register-form")) {
     const registerForm = document.querySelector("#register-form");
-    registerForm.addEventListener("submit", (e) => {
+
+    // Handle form submission
+    registerForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        // Collect form data
         const username = registerForm.querySelector('input[type="text"]').value;
         const email = registerForm.querySelector('input[type="email"]').value;
         const password = registerForm.querySelector('input[type="password"]').value;
 
-        // Basic validation
+        // Simple validation (ensure all fields are filled)
         if (!username || !email || !password) {
             alert("All fields are required!");
             return;
         }
 
-        // Simulated registration logic
-        users.push({ username, email, password });
-        saveToLocalStorage();
-        alert("Registration successful! Please log in.");
-        window.location.href = "login.html";
-    });
-}
+        try {
+            // Make POST request to register the user
+            const response = await fetch(`${API_URL}/auth/register`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                }),
+            });
 
-// Dashboard Page
-if (document.querySelector("#dashboard-section")) {
-    const taskList = document.querySelector(".task-list");
-    const addTaskBtn = document.querySelector("#add-task-btn");
-    const searchBar = document.querySelector("#search-bar");
-    const priorityFilter = document.querySelector("#priority-filter");
-    const dateFilter = document.querySelector("#date-filter");
+            const data = await response.json();
 
-    function renderTasks() {
-        taskList.innerHTML = "";
-        const filteredTasks = tasks.filter((task) => {
-            const matchesPriority =
-                priorityFilter.value === "all" || task.priority === priorityFilter.value;
-            const matchesDate =
-                !dateFilter.value || task.deadline === dateFilter.value;
-            const matchesSearch =
-                !searchBar.value ||
-                task.title.toLowerCase().includes(searchBar.value.toLowerCase()) ||
-                task.description
-                    .toLowerCase()
-                    .includes(searchBar.value.toLowerCase());
-
-            return matchesPriority && matchesDate && matchesSearch;
-        });
-
-        filteredTasks.forEach((task) => {
-            const taskCard = document.createElement("div");
-            taskCard.classList.add("task-card");
-            taskCard.innerHTML = `
-                <h3>${task.title}</h3>
-                <p>${task.description}</p>
-                <p><strong>Priority:</strong> ${task.priority}</p>
-                <p><strong>Deadline:</strong> ${task.deadline}</p>
-                <button onclick="editTask(${task.id})">Edit</button>
-                <button onclick="deleteTask(${task.id})">Delete</button>
-            `;
-            taskList.appendChild(taskCard);
-        });
-    }
-
-    function addTask(title, description, deadline, priority) {
-        tasks.push({
-            id: Date.now(),
-            title,
-            description,
-            deadline,
-            priority,
-            userId: currentUser ? currentUser.email : null,
-        });
-        saveToLocalStorage();
-        renderTasks();
-    }
-
-    function editTask(id) {
-        const task = tasks.find((t) => t.id === id);
-        if (!task) return;
-
-        const title = prompt("Edit Title:", task.title);
-        const description = prompt("Edit Description:", task.description);
-        const deadline = prompt("Edit Deadline (YYYY-MM-DD):", task.deadline);
-        const priority = prompt("Edit Priority (low, medium, high):", task.priority);
-
-        if (title) task.title = title;
-        if (description) task.description = description;
-        if (deadline) task.deadline = deadline;
-        if (priority) task.priority = priority;
-
-        saveToLocalStorage();
-        renderTasks();
-    }
-
-    function deleteTask(id) {
-        tasks = tasks.filter((task) => task.id !== id);
-        saveToLocalStorage();
-        renderTasks();
-    }
-
-    // Add task button logic
-    addTaskBtn.addEventListener("click", () => {
-        const title = prompt("Task Title:");
-        const description = prompt("Task Description:");
-        const deadline = prompt("Task Deadline (YYYY-MM-DD):");
-        const priority = prompt("Task Priority (low, medium, high):");
-
-        if (title && description && deadline && priority) {
-            addTask(title, description, deadline, priority);
-        } else {
-            alert("All fields are required!");
+            // If registration is successful
+            if (response.ok) {
+                alert("Registration successful! Please log in.");
+                window.location.href = "login.html"; // Redirect to login page
+            } else {
+                // If registration fails
+                alert(data.message || "Something went wrong.");
+            }
+        } catch (err) {
+            console.error("Error:", err);
+            alert("Error registering user.");
         }
     });
-
-    // Search bar and filters
-    searchBar.addEventListener("input", renderTasks);
-    priorityFilter.addEventListener("change", renderTasks);
-    dateFilter.addEventListener("change", renderTasks);
-
-    // Initial render
-    renderTasks();
 }
+
+// Login Page
+if (document.querySelector("#login-form")) {
+    const loginForm = document.querySelector("#login-form");
+
+    // Handle form submission
+    loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Collect form data
+        const email = loginForm.querySelector('input[type="email"]').value;
+        const password = loginForm.querySelector('input[type="password"]').value;
+
+        // Simple validation (ensure all fields are filled)
+        if (!email || !password) {
+            alert("Please enter both email and password.");
+            return;
+        }
+
+        try {
+            // Make POST request to login user
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            });
+
+            const data = await response.json();
+
+            // If login is successful
+            if (response.ok) {
+                localStorage.setItem("token", data.token);  // Store JWT in localStorage
+                alert("Login successful!");
+                window.location.href = "dashboard.html";  // Redirect to dashboard
+            } else {
+                // If login fails
+                alert(data.message || "Invalid credentials.");
+            }
+        } catch (err) {
+            console.error("Error:", err);
+            alert("Error logging in.");
+        }
+    });
+}
+
+
+
+function renderTasks(tasks) {
+    taskList.innerHTML = "";
+    tasks.forEach((task) => {
+        const taskCard = document.createElement("div");
+        taskCard.classList.add("task-card");
+        taskCard.innerHTML = `
+            <h3>${task.title}</h3>
+            <p>${task.description}</p>
+            <p><strong>Priority:</strong> ${task.priority}</p>
+            <p><strong>Deadline:</strong> ${task.deadline}</p>
+            <button onclick="editTask(${task.id})">Edit</button>
+            <button onclick="deleteTask(${task.id})">Delete</button>
+        `;
+        taskList.appendChild(taskCard);
+    });
+}
+
+// Fetch user tasks from the backend
+async function fetchTasks() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        alert("You must be logged in to view tasks.");
+        window.location.href = "login.html";  // Redirect to login if no token
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/tasks`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,  // Send JWT in the Authorization header
+            },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            renderTasks(data.tasks);  // Render the fetched tasks
+        } else {
+            alert(data.message || "Error fetching tasks.");
+        }
+    } catch (err) {
+        console.error("Error:", err);
+        alert("Error fetching tasks.");
+    }
+}
+
+// Initialize dashboard by fetching tasks
+fetchTasks();
