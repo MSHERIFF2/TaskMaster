@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['https://task-master-ynps.vercel.app/'],  // Your frontend URL(s)
+  origin: ['https://localhost:5500', 'https://127.0.1.1:5500'],  // Your frontend URL(s)
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
