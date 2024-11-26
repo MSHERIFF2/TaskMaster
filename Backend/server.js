@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs"); 
+const router = express.Router()
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
@@ -26,7 +27,7 @@ app.use("/api/tasks", taskRoutes);
 
 
 // Register a new user
-app.post("/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
@@ -50,7 +51,7 @@ app.post("/register", async (req, res) => {
 });
 
 // Login a user
-app.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
