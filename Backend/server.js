@@ -18,7 +18,8 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
-app.use("/api/auth", authRoutes);
+app.use("/api/auth/register", authRoutes);
+app.use("/api/auth/login", authRoutes);
 app.use("/api/tasks", taskRoutes);
 
 // testing API
