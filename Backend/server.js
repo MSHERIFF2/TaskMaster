@@ -1,33 +1,24 @@
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
-const bcrypt = require("bcryptjs"); 
-const router = express.Router()
+const bcrypt = require("bcryptjs");
+const User = require("./models/User"); // Ensure you have this model defined
+const authTasks = require("./routes/tasks")
 require("dotenv").config();
-
-const authRoutes = require("./routes/auth");
-const taskRoutes = require("./routes/tasks");
 
 const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5500', 'http://127.0.0.1:5500'],
+  origin: ['http://localhost:5500', 'http://127.0.0.1:5500'],  // Your frontend URL(s)
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-app.use(express.json());
-
-// Routes
-// app.use("/api/auth", authRoutes);
-app.use("/api/tasks", taskRoutes);
-
+app.use(express.json()); // This allows us to parse JSON request bodies
 
 // Register a new user
-router.post("/register", async (req, res) => {
+app.post("/api/auth/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
@@ -51,7 +42,7 @@ router.post("/register", async (req, res) => {
 });
 
 // Login a user
-router.post("/login", async (req, res) => {
+app.post("/api/auth/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -75,20 +66,20 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//  get all tasks
 
-// testing API
+app.use('/api/tasks', authTasks)
 
+// Testing route to ensure server is running
 app.get('/', (req, res) => {
-  res.send('Welcome to Taskmaser API')
-})
+  res.send('Welcome to Taskmaster API');
+});
+
 // MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected successfully"))
   .catch((err) => console.error("MongoDB connection error:", err));
-
-// JWT SECRET TOKEN
-const jwtScrete = process.env.JWT_SECRET;
 
 // Start server
 const PORT = process.env.PORT || 5000;
