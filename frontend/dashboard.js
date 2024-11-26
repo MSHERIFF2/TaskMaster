@@ -1,4 +1,4 @@
-const API_URL = 'https://taskmaster-lwpe.onrender.com';  // Update if necessary
+const API_URL = 'https://taskmaster-lwpe.onrender.com/api';  // Update if necessary
 // Fetch user tasks from the backend
 async function fetchTasks() {
     const token = localStorage.getItem("token");
