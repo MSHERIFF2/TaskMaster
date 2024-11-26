@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['https://vercel.com/muritala-sheriffdeen-adegokes-projects/task-master'],  // Your frontend URL(s)
+  origin: ['https://task-master-ynps.vercel.app/'],  // Your frontend URL(s)
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
