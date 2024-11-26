@@ -6,7 +6,7 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 
 // Get all tasks for the logged-in user
-/* router.get("/", auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
     try {
         const tasks = await Task.find({ user: req.user.userId });
         res.json(tasks);
@@ -14,9 +14,9 @@ const router = express.Router();
         res.status(500).json({ message: "Server error." });
     }
 });
- */
 
-router.get("/", auth, async (req, res) => {
+
+/* router.get("/", auth, async (req, res) => {
     try {
         const tasks = await Task.find({ user: req.user.userId });
         res.json({ tasks }); // Return an object with a tasks property
@@ -24,7 +24,7 @@ router.get("/", auth, async (req, res) => {
         res.status(500).json({ message: "Server error." });
     }
 });
-
+ */
 // Create a new task
 router.post("/", auth, async (req, res) => {
     const { title, description, priority, deadline } = req.body;
