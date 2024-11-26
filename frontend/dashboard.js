@@ -1,4 +1,6 @@
+const taskList = document.querySelector(".task-list");
 const API_URL = 'https://taskmaster-lwpe.onrender.com/api';  // Update if necessary
+
 // Fetch user tasks from the backend
 async function fetchTasks() {
     const token = localStorage.getItem("token");
@@ -17,8 +19,9 @@ async function fetchTasks() {
         });
 
         const data = await response.json();
+        console.log('API Response:', data); // Log the API response for debugging
 
-        if (response.ok) {
+        if (response.ok && data.tasks) {
             renderTasks(data.tasks);  // Render the fetched tasks
         } else {
             alert(data.message || "Error fetching tasks.");
@@ -30,10 +33,19 @@ async function fetchTasks() {
 }
 
 // Initialize dashboard by fetching tasks
-fetchTasks();
+document.addEventListener("DOMContentLoaded", function () {
+    fetchTasks();
+});
 
+// Render the fetched tasks on the page
 function renderTasks(tasks) {
-    taskList.innerHTML = "";
+    if (!Array.isArray(tasks)) {
+        console.error("Expected tasks to be an array, but got:", tasks);
+        return; // Exit if tasks are not an array
+    }
+
+    taskList.innerHTML = "";  // Clear the task list before rendering new tasks
+
     tasks.forEach((task) => {
         const taskCard = document.createElement("div");
         taskCard.classList.add("task-card");
@@ -99,6 +111,7 @@ taskForm.addEventListener('submit', async (e) => {
 
         if (response.ok) {
             alert("Task created successfully.");
+            // After successfully creating a task, refetch tasks
             fetchTasks();  // Re-fetch tasks to include the newly created task
             taskModal.style.display = 'none';  // Close the modal
         } else {
