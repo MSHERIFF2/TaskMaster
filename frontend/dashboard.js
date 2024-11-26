@@ -1,3 +1,4 @@
+const API_URL = 'https://taskmaster-lwpe.onrender.com';  // Update if necessary
 // Fetch user tasks from the backend
 async function fetchTasks() {
     const token = localStorage.getItem("token");
@@ -30,3 +31,21 @@ async function fetchTasks() {
 
 // Initialize dashboard by fetching tasks
 fetchTasks();
+
+function renderTasks(tasks) {
+    taskList.innerHTML = "";
+    tasks.forEach((task) => {
+        const taskCard = document.createElement("div");
+        taskCard.classList.add("task-card");
+        taskCard.innerHTML = `
+            <h3>${task.title}</h3>
+            <p>${task.description}</p>
+            <p><strong>Priority:</strong> ${task.priority}</p>
+            <p><strong>Deadline:</strong> ${task.deadline}</p>
+            <button onclick="editTask(${task.id})">Edit</button>
+            <button onclick="deleteTask(${task.id})">Delete</button>
+        `;
+        taskList.appendChild(taskCard);
+    });
+}
+
