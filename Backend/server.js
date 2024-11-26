@@ -11,8 +11,9 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5500',  // Allow the frontend to communicate
-  methods: 'GET,POST,PUT,DELETE',
+  origin: ['http://localhost:5500', 'http://127.0.0.1:5500'],
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());
 
