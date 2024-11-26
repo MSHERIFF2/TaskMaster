@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5500', 'http://127.0.0.1:5500'],  // Your frontend URL(s)
+  origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://vercel.com/muritala-sheriffdeen-adegokes-projects/task-master'],  // Your frontend URL(s)
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
