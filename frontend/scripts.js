@@ -1,5 +1,5 @@
 // API base URL for backend
-const API_URL = 'https://taskmaster-lwpe.onrender.com/';  // Update if necessary
+const API_URL = 'https://taskmaster-lwpe.onrender.com/api/auth';  // Update if necessary
 const taskList = document.querySelector(".task-list");
 
 // Register Page
@@ -23,7 +23,7 @@ if (document.querySelector("#register-form")) {
 
         try {
             // Make POST request to register the user
-            const response = await fetch(`${API_URL}/auth/register`, {
+            const response = await fetch(`${API_URL}/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +72,7 @@ if (document.querySelector("#login-form")) {
 
         try {
             // Make POST request to login user
-            const response = await fetch(`${API_URL}/auth/login`, {
+            const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
