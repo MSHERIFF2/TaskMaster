@@ -18,7 +18,7 @@ app.use(cors({
 app.use(express.json()); // This allows us to parse JSON request bodies
 
 // Register a new user
-app.post("/api/auth/register", async (req, res) => {
+app.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
@@ -42,7 +42,7 @@ app.post("/api/auth/register", async (req, res) => {
 });
 
 // Login a user
-app.post("/api/auth/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
