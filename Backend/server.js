@@ -12,7 +12,7 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: ['https://localhost:5500', 'https://127.0.1.1:5500'],  // Your frontend URL(s)
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json()); // This allows us to parse JSON request bodies
