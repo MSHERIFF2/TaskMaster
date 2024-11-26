@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://task-master-seven-steel.vercel.app/'],  // Your frontend URL(s)
+  origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://task-master-seven-steel.vercel.app'],  // Your frontend URL(s)
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
