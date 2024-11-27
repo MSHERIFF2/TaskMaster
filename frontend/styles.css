@@ -6,14 +6,14 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
     color: #333;
 }
 
 /* Hero Page */
 .hero {
-    background-color: #4CAF50; /* Green brand color */
+    background-color: #8BC34A; /* Light green */
     color: white;
     text-align: center;
     padding: 60px 0;
@@ -22,6 +22,7 @@ body {
 .hero h1 {
     font-size: 2.5em;
     margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .hero p {
@@ -31,21 +32,22 @@ body {
 
 .hero a {
     text-decoration: none;
-    color: #fff;
-    background-color: #333;
+    color: white;
+    background-color: #4CAF50; /* Green */
     padding: 10px 20px;
     border-radius: 5px;
+    font-weight: bold;
 }
 
 .hero a:hover {
-    background-color: #555;
+    background-color: #45a049;
 }
 
 /* Auth Container */
 .auth-container {
     max-width: 400px;
     margin: 40px auto;
-    background: #fff;
+    background: white;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -54,6 +56,7 @@ body {
 .auth-container h1 {
     text-align: center;
     margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .auth-container input {
@@ -67,11 +70,12 @@ body {
 .auth-container button {
     width: 100%;
     padding: 12px;
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Green */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .auth-container button:hover {
@@ -92,7 +96,7 @@ body {
 }
 
 .task-card {
-    background-color: #fff;
+    background-color: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -100,16 +104,18 @@ body {
 }
 
 .task-card h3 {
-    color: #4CAF50;
+    color: #8BC34A; /* Light green */
+    font-weight: bold;
 }
 
 button {
     padding: 8px 16px;
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Green */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 button:hover {
@@ -119,7 +125,6 @@ button:hover {
 .task-card button {
     margin-top: 10px;
 }
-
 
 /* Modal Styling */
 #task-modal {
@@ -132,6 +137,7 @@ button:hover {
     background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
+    display: flex;
 }
 
 .modal-content {
@@ -141,6 +147,15 @@ button:hover {
     width: 300px;
 }
 
-button {
-    cursor: pointer;
+#search-bar {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 50%;
+    margin: 20px auto;
+}
+
+#search-bar:focus {
+    outline: none;
+    border-color: #4CAF50; /* Green */
 }
