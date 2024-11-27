@@ -127,7 +127,7 @@ button:hover {
 }
 
 /* Modal Styling */
-#task-modal {
+/* #task-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -138,7 +138,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     display: flex;
-}
+} */
 
 .modal-content {
     background-color: white;
