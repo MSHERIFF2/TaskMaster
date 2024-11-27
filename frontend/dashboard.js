@@ -124,8 +124,8 @@ taskForm.addEventListener('submit', async (e) => {
 });
 
 
-// Edit Task
-async function editTask(userId) {
+// Function to handle task editing
+async function editTask(taskId) {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -135,7 +135,7 @@ async function editTask(userId) {
 
     // Fetch the task by ID to pre-fill the modal
     try {
-        const response = await fetch(`${API_URL}/tasks/${userId}`, {
+        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
             },
@@ -144,16 +144,17 @@ async function editTask(userId) {
         const data = await response.json();
 
         if (response.ok) {
-            const task = data.task;
-            // Populate modal with task data for editing
+            const task = data;  //  data contains the task
+
+            // Populate the form with the existing task's details for editing
             document.getElementById('task-title').value = task.title;
             document.getElementById('task-description').value = task.description;
             document.getElementById('task-priority').value = task.priority;
             document.getElementById('task-deadline').value = task.deadline;
 
-            taskModal.style.display = 'block';  // Open modal for editing
+            taskModal.style.display = 'block';  // Open the modal for editing
 
-            // Update the task when form is submitted
+            // Handle form submission to update task
             taskForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
@@ -163,7 +164,7 @@ async function editTask(userId) {
                 const updatedDeadline = document.getElementById('task-deadline').value;
 
                 try {
-                    const updateResponse = await fetch(`${API_URL}/tasks/${userId}`, {
+                    const updateResponse = await fetch(`${API_URL}/tasks/${taskId}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
