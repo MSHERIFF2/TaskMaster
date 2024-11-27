@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Render the fetched tasks on the page
 function renderTasks(tasks) {
-    
+
     if (!Array.isArray(tasks)) {
         console.error("Expected tasks to be an array, but got:", tasks);
         return; // Exit if tasks are not an array
@@ -49,21 +49,35 @@ function renderTasks(tasks) {
 
     tasks.forEach((task) => {
         const taskCard = document.createElement("div");
+        const editBtn = document.createElement("button");
+        const deleteBtn = document.createElement("button");
+
         taskCard.classList.add("task-card");
         taskCard.innerHTML = `
             <h3>${task.title}</h3>
             <p>${task.description}</p>
             <p><strong>Priority:</strong> ${task.priority}</p>
             <p><strong>Deadline:</strong> ${task.deadline}</p>
-           <button class="edit-btn">Edit</button>
-            <button class="delete-btn">Delete</button>
         `;
-        taskList.appendChild(taskCard);
-        const editBtn = taskCard.querySelector(".edit-btn");
-        const deleteBtn = taskCard.querySelector(".delete-btn");
+        editBtn.classList.add("edit-btn");
+        editBtn.textContent = "Edit";
+        editBtn.taskId = task._id;
 
-        editBtn.addEventListener("click", () => editTask(taskId));
-        deleteBtn.addEventListener("click", () => deleteTask(taskId));
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.taskId = task._id;
+
+        taskCard.appendChild(editBtn);
+        taskCard.appendChild(deleteBtn);
+
+        taskList.appendChild(taskCard);
+
+        editBtn.addEventListener("click", () => editTask(editBtn.taskId));
+        deleteBtn.addEventListener("click", () => deleteTask(deleteBtn.taskId));
+
+
+
+
     });
 }
 
@@ -141,13 +155,13 @@ async function editTask(taskId) {
 
     const taskModal = document.getElementById('task-modal');
     const taskForm = document.getElementById('task-form');
-    const token = localStorage.getItem("token");   
-  const userId = localStorage.getItem("userId"); // Assuming you store the user's ID in local storage
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId"); // Assuming you store the user's ID in local storage
 
-  if (!token || !userId) {
-    alert("You must be logged in to edit a task.");
-    return;
-  }
+    if (!token || !userId) {
+        alert("You must be logged in to edit a task.");
+        return;
+    }
 
     // Fetch the task by ID to pre-fill the modal
     try {
@@ -227,7 +241,7 @@ async function deleteTask(taskId) {
     if (!token || !userId) {
         alert("You must be logged in to delete a task.");
         return;
-      }
+    }
     if (window.confirm("Are you sure you want to delete this task?")) {
         try {
             const response = await fetch(`${API_URL}/tasks/${taskId}`, {
