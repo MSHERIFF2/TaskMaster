@@ -66,10 +66,15 @@ const addTaskBtn = document.getElementById('add-task-btn');
 const taskModal = document.getElementById('task-modal');
 const closeModalBtn = document.getElementById('close-modal-btn');
 const taskForm = document.getElementById('task-form');
+const modelContent = document.getElementsByClassName('modal-content')
 
 // Open the modal when "Add Task" button is clicked
 addTaskBtn.addEventListener('click', () => {
-    taskModal.style.display = 'block';
+    taskModal.style.display = 'flex';
+    taskModal.style.alignItems = 'center';
+    taskModal.style.alignContent = 'center';
+    modelContent.style.margin = 'auto';
+
 });
 
 // Close the modal when "Close" button is clicked
