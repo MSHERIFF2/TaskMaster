@@ -62,8 +62,8 @@ function renderTasks(tasks) {
         const editBtn = taskCard.querySelector(".edit-btn");
         const deleteBtn = taskCard.querySelector(".delete-btn");
 
-        editBtn.addEventListener("click", () => editTask(task._id));
-        deleteBtn.addEventListener("click", () => deleteTask(task._id));
+        editBtn.addEventListener("click", () => editTask());
+        deleteBtn.addEventListener("click", () => deleteTask());
     });
 }
 
@@ -137,7 +137,7 @@ taskForm.addEventListener('submit', async (e) => {
 
 
 // Function to handle task editing
-async function editTask(taskId) {
+async function editTask() {
     const taskModal = document.getElementById('task-modal');
     const taskForm = document.getElementById('task-form');
     const token = localStorage.getItem("token");
@@ -149,7 +149,7 @@ async function editTask(taskId) {
 
     // Fetch the task by ID to pre-fill the modal
     try {
-        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+        const response = await fetch(`${API_URL}/tasks/taskId`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
             },
@@ -217,7 +217,7 @@ async function editTask(taskId) {
 }
 
 // Delete Task
-async function deleteTask(taskId) {
+async function deleteTask() {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -227,7 +227,7 @@ async function deleteTask(taskId) {
 
     if (window.confirm("Are you sure you want to delete this task?")) {
         try {
-            const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+            const response = await fetch(`${API_URL}/tasks/taskId`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
