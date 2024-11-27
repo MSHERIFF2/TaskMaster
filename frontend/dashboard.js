@@ -152,9 +152,9 @@ async function editTask(taskId) {
     const taskModal = document.getElementById('task-modal');
     const taskForm = document.getElementById('task-form');
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("user-id"); // Assuming you store the user's ID in local storage
+    // const userId = localStorage.getItem("user-id"); // Assuming you store the user's ID in local storage
 
-    if (!token || !user-id) {
+    if (!token) {
         alert("You must be logged in to edit a task.");
         return;
     }
@@ -232,9 +232,9 @@ async function editTask(taskId) {
 // Delete Task
 async function deleteTask(taskId) {
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("user-id");
+    // const userId = localStorage.getItem("user-id");
 
-    if (!token || !userId) {
+    if (!token) {
         alert("You must be logged in to delete a task.");
         return;
     }
