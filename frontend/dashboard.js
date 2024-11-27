@@ -164,7 +164,7 @@ async function editTask(taskId) {
         const response = await fetch(`${API_URL}/tasks/${taskId}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
-                "User-ID": userId
+                // "User-ID": userId
             },
         });
 
@@ -244,7 +244,7 @@ async function deleteTask(taskId) {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    "User-ID": userId // Pass the user's ID in the headers
+                    // "User-ID": userId // Pass the user's ID in the headers
                 },
             });
 
