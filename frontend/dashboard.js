@@ -132,6 +132,8 @@ taskForm.addEventListener('submit', async (e) => {
 
 // Function to handle task editing
 async function editTask(taskId) {
+    const taskModal = document.getElementById('task-modal');
+    const taskForm = document.getElementById('task-form');
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -170,7 +172,7 @@ async function editTask(taskId) {
                 const updatedDeadline = document.getElementById('task-deadline').value;
 
                 try {
-                    const updateResponse = await fetch(`${API_URL}/tasks/${userId}`, {
+                    const updateResponse = await fetch(`${API_URL}/tasks/${taskId}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -219,7 +221,7 @@ async function deleteTask(taskId) {
 
     if (confirm("Are you sure you want to delete this task?")) {
         try {
-            const response = await fetch(`${API_URL}/tasks/${userId}`, {
+            const response = await fetch(`${API_URL}/tasks/${taskId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
