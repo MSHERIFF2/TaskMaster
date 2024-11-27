@@ -71,6 +71,7 @@ const modelContent = document.getElementsByClassName('modal-content')
 // Open the modal when "Add Task" button is clicked
 addTaskBtn.addEventListener('click', () => {
     taskModal.style.display = 'flex';
+    taskModal.style.flexDirection = 'column';
     taskModal.style.alignItems = 'center';
     taskModal.style.alignContent = 'center';
     modelContent.style.margin = 'auto';
