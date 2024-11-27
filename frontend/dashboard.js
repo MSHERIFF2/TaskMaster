@@ -125,7 +125,7 @@ taskForm.addEventListener('submit', async (e) => {
 
 
 // Edit Task
-async function editTask(taskId) {
+async function editTask(userId) {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -135,7 +135,7 @@ async function editTask(taskId) {
 
     // Fetch the task by ID to pre-fill the modal
     try {
-        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+        const response = await fetch(`${API_URL}/tasks/${userId}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
             },
@@ -163,7 +163,7 @@ async function editTask(taskId) {
                 const updatedDeadline = document.getElementById('task-deadline').value;
 
                 try {
-                    const updateResponse = await fetch(`${API_URL}/tasks/${taskId}`, {
+                    const updateResponse = await fetch(`${API_URL}/tasks/${userId}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -202,7 +202,7 @@ async function editTask(taskId) {
 }
 
 // Delete Task
-async function deleteTask(taskId) {
+async function deleteTask(userId) {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -212,7 +212,7 @@ async function deleteTask(taskId) {
 
     if (confirm("Are you sure you want to delete this task?")) {
         try {
-            const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+            const response = await fetch(`${API_URL}/tasks/${userId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
