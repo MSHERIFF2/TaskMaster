@@ -1,133 +1,127 @@
-/* Global Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f9f9f9;
+    }
+    
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
     color: #333;
-}
-
-/* Hero Page */
-.hero {
-    background-color: #8BC34A; /* Light green */
+    }
+    
+    /* Hero Page */
+    .hero {
+    background-color: #4CAF50; /* Green brand color */
     color: white;
     text-align: center;
     padding: 60px 0;
-}
-
-.hero h1 {
+    }
+    
+    .hero h1 {
     font-size: 2.5em;
     margin-bottom: 20px;
-    font-weight: bold;
-}
-
-.hero p {
+    }
+    
+    .hero p {
     font-size: 1.2em;
     margin-bottom: 20px;
-}
-
-.hero a {
+    }
+    
+    .hero a {
     text-decoration: none;
-    color: white;
-    background-color: #4CAF50; /* Green */
+    color: #fff;
+    background-color: #333;
     padding: 10px 20px;
     border-radius: 5px;
-    font-weight: bold;
-}
-
-.hero a:hover {
-    background-color: #45a049;
-}
-
-/* Auth Container */
-.auth-container {
+    }
+    
+    .hero a:hover {
+    background-color: #555;
+    }
+    
+    /* Auth Container */
+    .auth-container {
     max-width: 400px;
     margin: 40px auto;
-    background: white;
+    background: #fff;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.auth-container h1 {
+    }
+    
+    .auth-container h1 {
     text-align: center;
     margin-bottom: 20px;
-    font-weight: bold;
-}
-
-.auth-container input {
+    }
+    
+    .auth-container input {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 4px;
-}
-
-.auth-container button {
+    }
+    
+    .auth-container button {
     width: 100%;
     padding: 12px;
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-}
-
-.auth-container button:hover {
+    }
+    
+    .auth-container button:hover {
     background-color: #45a049;
-}
-
-/* Dashboard */
-.dashboard-container {
+    }
+    
+    /* Dashboard */
+    .dashboard-container {
     max-width: 800px;
     margin: 40px auto;
-}
-
-.task-list {
+    }
+    
+    .task-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: space-between;
-}
-
-.task-card {
-    background-color: white;
+    }
+    
+    .task-card {
+    background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 48%;
-}
-
-.task-card h3 {
-    color: #8BC34A; /* Light green */
-    font-weight: bold;
-}
-
-button {
+    }
+    
+    .task-card h3 {
+    color: #4CAF50;
+    }
+    
+    button {
     padding: 8px 16px;
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
-}
-
-button:hover {
+    }
+    
+    button:hover {
     background-color: #45a049;
-}
-
-.task-card button {
+    }
+    
+    .task-card button {
     margin-top: 10px;
-}
-
-/* Modal Styling */
-/* #task-modal {
+    }
+    
+    
+    /* Modal Styling */
+    #task-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -137,25 +131,15 @@ button:hover {
     background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
-    display: flex;
-} */
-
-.modal-content {
+    }
+    
+    .modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     width: 300px;
-}
-
-#search-bar {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 50%;
-    margin: 20px auto;
-}
-
-#search-bar:focus {
-    outline: none;
-    border-color: #4CAF50; /* Green */
-}
+    }
+    
+    button {
+    cursor: pointer;
+    }
