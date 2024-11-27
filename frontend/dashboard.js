@@ -122,3 +122,131 @@ taskForm.addEventListener('submit', async (e) => {
         alert("Error creating task.");
     }
 });
+
+
+// Edit Task
+async function editTask(taskId) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        alert("You must be logged in to edit a task.");
+        return;
+    }
+
+    // Fetch the task by ID to pre-fill the modal
+    try {
+        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            const task = data.task;
+            // Populate modal with task data for editing
+            document.getElementById('task-title').value = task.title;
+            document.getElementById('task-description').value = task.description;
+            document.getElementById('task-priority').value = task.priority;
+            document.getElementById('task-deadline').value = task.deadline;
+
+            taskModal.style.display = 'block';  // Open modal for editing
+
+            // Update the task when form is submitted
+            taskForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const updatedTitle = document.getElementById('task-title').value;
+                const updatedDescription = document.getElementById('task-description').value;
+                const updatedPriority = document.getElementById('task-priority').value;
+                const updatedDeadline = document.getElementById('task-deadline').value;
+
+                try {
+                    const updateResponse = await fetch(`${API_URL}/tasks/${taskId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            title: updatedTitle,
+                            description: updatedDescription,
+                            priority: updatedPriority,
+                            deadline: updatedDeadline,
+                        }),
+                    });
+
+                    const updateData = await updateResponse.json();
+
+                    if (updateResponse.ok) {
+                        alert("Task updated successfully.");
+                        fetchTasks();  // Re-fetch tasks to show updated list
+                        taskModal.style.display = 'none';  // Close the modal
+                    } else {
+                        alert(updateData.message || "Error updating task.");
+                    }
+                } catch (err) {
+                    console.error("Error:", err);
+                    alert("Error updating task.");
+                }
+            });
+
+        } else {
+            alert(data.message || "Error fetching task for editing.");
+        }
+    } catch (err) {
+        console.error("Error:", err);
+        alert("Error fetching task for editing.");
+    }
+}
+
+// Delete Task
+async function deleteTask(taskId) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        alert("You must be logged in to delete a task.");
+        return;
+    }
+
+    if (confirm("Are you sure you want to delete this task?")) {
+        try {
+            const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Task deleted successfully.");
+                fetchTasks();  // Re-fetch tasks after deletion
+            } else {
+                alert(data.message || "Error deleting task.");
+            }
+        } catch (err) {
+            console.error("Error:", err);
+            alert("Error deleting task.");
+        }
+    }
+}
+
+// Search/Filter Tasks
+const searchInput = document.getElementById('search-bar');  // Assuming you have an input with id 'search-input'
+
+searchInput.addEventListener('input', function () {
+    const searchQuery = searchInput.value.toLowerCase();
+    const taskCards = document.querySelectorAll('.task-card');
+
+    taskCards.forEach((taskCard) => {
+        const title = taskCard.querySelector('h3').textContent.toLowerCase();
+        if (title.includes(searchQuery)) {
+            taskCard.style.display = '';  // Show matching task
+        } else {
+            taskCard.style.display = 'none';  // Hide non-matching task
+        }
+    });
+});
