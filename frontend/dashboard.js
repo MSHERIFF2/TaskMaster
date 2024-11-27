@@ -219,7 +219,7 @@ async function deleteTask(taskId) {
         return;
     }
 
-    if (confirm("Are you sure you want to delete this task?")) {
+    if (window.confirm("Are you sure you want to delete this task?")) {
         try {
             const response = await fetch(`${API_URL}/tasks/${taskId}`, {
                 method: "DELETE",
