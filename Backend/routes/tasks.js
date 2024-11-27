@@ -46,7 +46,7 @@ router.post("/", auth, async (req, res) => {
 });
 
 // Update a task
-router.put("/taskId", auth, async (req, res) => {
+router.put("/:taskId", auth, async (req, res) => {
     const { title, description, priority, deadline } = req.body;
 
     try {
@@ -67,7 +67,7 @@ router.put("/taskId", auth, async (req, res) => {
 });
 
 // Delete a task
-router.delete("/taskId", auth, async (req, res) => {
+router.delete("/:taskId", auth, async (req, res) => {
     try {
         const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user.userId });
 
