@@ -143,3 +143,15 @@
     button {
     cursor: pointer;
     }
+    #search-bar {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 50%;
+        margin: 20px auto;
+      }
+      
+      #search-bar:focus {
+        outline: none;
+        border-color: #4CAF50;
+      }
