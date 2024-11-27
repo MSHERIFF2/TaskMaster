@@ -54,8 +54,8 @@ function renderTasks(tasks) {
             <p>${task.description}</p>
             <p><strong>Priority:</strong> ${task.priority}</p>
             <p><strong>Deadline:</strong> ${task.deadline}</p>
-            <button onclick="editTask(${task.id})">Edit</button>
-            <button onclick="deleteTask(${task.id})">Delete</button>
+            <button onclick="editTask(${task._id})">Edit</button>
+            <button onclick="deleteTask(${task._id})">Delete</button>
         `;
         taskList.appendChild(taskCard);
     });
@@ -125,7 +125,7 @@ taskForm.addEventListener('submit', async (e) => {
 
 
 // Function to handle task editing
-async function editTask(userId) {
+async function editTask(taskId) {
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -135,7 +135,7 @@ async function editTask(userId) {
 
     // Fetch the task by ID to pre-fill the modal
     try {
-        const response = await fetch(`${API_URL}/tasks/${userId}`, {
+        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
             },
@@ -203,7 +203,7 @@ async function editTask(userId) {
 }
 
 // Delete Task
-async function deleteTask(userId) {
+async function deleteTask(taskId) {
     const token = localStorage.getItem("token");
 
     if (!token) {
