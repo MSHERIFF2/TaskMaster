@@ -74,10 +74,6 @@ function renderTasks(tasks) {
 
         editBtn.addEventListener("click", () => editTask(editBtn.taskId));
         deleteBtn.addEventListener("click", () => deleteTask(deleteBtn.taskId));
-
-
-
-
     });
 }
 
@@ -94,7 +90,7 @@ addTaskBtn.addEventListener('click', () => {
     taskModal.style.flexDirection = 'column';
     taskModal.style.alignItems = 'center';
     taskModal.style.alignContent = 'center';
-    
+
 
 });
 
