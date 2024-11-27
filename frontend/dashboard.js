@@ -62,8 +62,8 @@ function renderTasks(tasks) {
         const editBtn = taskCard.querySelector(".edit-btn");
         const deleteBtn = taskCard.querySelector(".delete-btn");
 
-        editBtn.addEventListener("click", () => editTask());
-        deleteBtn.addEventListener("click", () => deleteTask());
+        editBtn.addEventListener("click", () => editTask(taskId));
+        deleteBtn.addEventListener("click", () => deleteTask(taskId));
     });
 }
 
