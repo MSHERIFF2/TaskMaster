@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Render the fetched tasks on the page
 function renderTasks(tasks) {
+    
     if (!Array.isArray(tasks)) {
         console.error("Expected tasks to be an array, but got:", tasks);
         return; // Exit if tasks are not an array
@@ -54,10 +55,15 @@ function renderTasks(tasks) {
             <p>${task.description}</p>
             <p><strong>Priority:</strong> ${task.priority}</p>
             <p><strong>Deadline:</strong> ${task.deadline}</p>
-            <button onclick="editTask(${task._id})">Edit</button>
-            <button onclick="deleteTask(${task._id})">Delete</button>
+           <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
         `;
         taskList.appendChild(taskCard);
+        const editBtn = taskCard.querySelector(".edit-btn");
+        const deleteBtn = taskCard.querySelector(".delete-btn");
+
+        editBtn.addEventListener("click", () => editTask(task._id));
+        deleteBtn.addEventListener("click", () => deleteTask(task._id));
     });
 }
 
