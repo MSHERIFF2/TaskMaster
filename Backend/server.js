@@ -3,14 +3,11 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const User = require("./models/User"); // Ensure you have this model defined
+const User = require("./models/User"); 
 const express = require("express");
 const Task = require("./models/Task");
-const auth = require("../middleware/auth");
-
-
+const auth = require("./middleware/auth");
 require("dotenv").config();
-
 const app = express();
 
 // Middleware
@@ -41,6 +38,7 @@ app.post("/register", async (req, res) => {
 
       res.status(201).json({ message: "User registered successfully." });
   } catch (err) {
+    console.log(err)
       res.status(500).json({ message: "Server error." });
   }
 });
@@ -112,7 +110,7 @@ const userId = req.headers["user-id"]; // Get the user's ID from the headers
 // Login a user
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-res.send("Testing")
+
   try {
       // Check if user exists
       const user = await User.findOne({ email });
