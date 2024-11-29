@@ -1,5 +1,5 @@
 const taskList = document.querySelector(".task-list");
-const API_URL = 'https://taskmaster-lwpe.onrender.com/api';  // Update if necessary
+const API_URL = 'https://taskmaster-lwpe.onrender.com/';  // Update if necessary
 
 // Fetch user tasks from the backend
 async function fetchTasks() {
@@ -152,9 +152,9 @@ async function editTask(taskId) {
     const taskModal = document.getElementById('task-modal');
     const taskForm = document.getElementById('task-form');
     const token = localStorage.getItem("token");
-    // const userId = localStorage.getItem("user-id"); // Assuming you store the user's ID in local storage
+   
 
-    if (!token) {
+    if (!token ) {
         alert("You must be logged in to edit a task.");
         return;
     }
@@ -163,8 +163,7 @@ async function editTask(taskId) {
     try {
         const response = await fetch(`${API_URL}/tasks/${taskId}`, {
             headers: {
-                "Authorization": `Bearer ${token}`,
-                // "User-ID": userId
+                "Authorization": `Bearer ${token}`
             },
         });
 
@@ -232,7 +231,7 @@ async function editTask(taskId) {
 // Delete Task
 async function deleteTask(taskId) {
     const token = localStorage.getItem("token");
-    // const userId = localStorage.getItem("user-id");
+    const userId = localStorage.getItem("user");
 
     if (!token) {
         alert("You must be logged in to delete a task.");
@@ -244,7 +243,7 @@ async function deleteTask(taskId) {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    // "User-ID": userId // Pass the user's ID in the headers
+                    "User-ID": user // Pass the user's ID in the headers
                 },
             });
 

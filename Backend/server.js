@@ -4,7 +4,11 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("./models/User"); // Ensure you have this model defined
-const authTasks = require("./routes/tasks")
+const express = require("express");
+const Task = require("../models/Task");
+const auth = require("../middleware/auth");
+
+// const router = express.Router();
 require("dotenv").config();
 
 const app = express();
@@ -41,6 +45,77 @@ app.post("/register", async (req, res) => {
   }
 });
 
+
+app.get("/tasks", auth, async (req, res) => {
+  try {
+      const tasks = await Task.find({ user: req.user.userId });
+      res.json({ tasks }); // Return an object with a tasks property
+  } catch (err) {
+      res.status(500).json({ message: "Server error." });
+  }
+});
+
+// Create a new task
+app.post("/", auth, async (req, res) => {
+  const { title, description, priority, deadline } = req.body;
+
+  try {
+      const newTask = new Task({
+          title,
+          description,
+          priority,
+          deadline,
+          user: req.user.userId,
+      });
+      await newTask.save();
+
+      res.status(201).json(newTask);
+  } catch (err) {
+      res.status(500).json({ message: "Server error." });
+  }
+});
+
+// Update a task
+app.put("/:id", auth, async (req, res) => {
+  const taskId = req.params.id;
+  const userId = req.headers["user-id"];
+  const { title, description, priority, deadline } = req.body;
+
+  try {
+      const task = await Task.findOneAndUpdate(
+          { _id: taskId, user: userId },
+          { title, description, priority, deadline },
+          { new: true }
+      );
+
+      if (!task) {
+          return res.status(404).json({ message: "Task not found." });
+      }
+
+      res.json(task);
+  } catch (err) {
+      res.status(500).json({ message: "Server error." });
+  }
+});
+
+// Delete a task
+app.delete("/:id", auth, async (req, res) => {
+  const taskId = req.params.id;
+const userId = req.headers["user-id"]; // Get the user's ID from the headers
+  try {
+      const task = await Task.findOneAndDelete({ _id: taskId, user: userId });
+
+      if (!task) {
+          return res.status(404).json({ message: "Task not found." });
+      }
+
+      res.json({ message: "Task deleted successfully." });
+  } catch (err) {
+      res.status(500).json({ message: "Server error." });
+  }
+});
+
+
 // Login a user
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -66,9 +141,9 @@ app.post("/login", async (req, res) => {
   }
 });
 
-//  get all tasks
+// //  get all tasks
 
-app.use('/api/tasks', authTasks)
+// app.use('/api/tasks', authTasks)
 
 // Testing route to ensure server is running
 app.get('/', (req, res) => {
