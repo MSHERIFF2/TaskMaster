@@ -8,7 +8,7 @@ const express = require("express");
 const Task = require("../models/Task");
 const auth = require("../middleware/auth");
 
-// const router = express.Router();
+
 require("dotenv").config();
 
 const app = express();
@@ -55,8 +55,10 @@ app.get("/tasks", auth, async (req, res) => {
   }
 });
 
+
+
 // Create a new task
-app.post("/", auth, async (req, res) => {
+app.post("/tasks", auth, async (req, res) => {
   const { title, description, priority, deadline } = req.body;
 
   try {
@@ -141,9 +143,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// //  get all tasks
-
-// app.use('/api/tasks', authTasks)
 
 // Testing route to ensure server is running
 app.get('/', (req, res) => {
