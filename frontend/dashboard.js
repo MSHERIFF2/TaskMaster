@@ -242,8 +242,9 @@ async function deleteTask(taskId) {
             const response = await fetch(`${API_URL}/${taskId}`, {
                 method: "DELETE",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "User-ID": user // Pass the user's ID in the headers
+                  "Authorization": `Bearer ${token}`,
+                  "User-ID": req.user.userId // Use req.user.userId instead of user
+                },
                 },
             });
 

@@ -78,25 +78,16 @@ app.post("/task", auth, async (req, res) => {
 });
 
 // Update a task
-app.put("/:id", auth, async (req, res) => {
+app.get("/:id", auth, async (req, res) => {
   const taskId = req.params.id;
-  const userId = req.headers["user-id"];
-  const { title, description, priority, deadline } = req.body;
-
   try {
-      const task = await Task.findOneAndUpdate(
-          { _id: taskId, user: userId },
-          { title, description, priority, deadline },
-          { new: true }
-      );
-
-      if (!task) {
-          return res.status(404).json({ message: "Task not found." });
-      }
-
-      res.json(task);
+    const task = await Task.findOne({ _id: taskId, user: req.user.userId });
+    if (!task) {
+      return res.status(404).json({ message: "Task not found." });
+    }
+    res.json(task);
   } catch (err) {
-      res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Server error." });
   }
 });
 
@@ -121,7 +112,7 @@ const userId = req.headers["user-id"]; // Get the user's ID from the headers
 // Login a user
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
+res.send("Testing")
   try {
       // Check if user exists
       const user = await User.findOne({ email });
