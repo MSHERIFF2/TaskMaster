@@ -46,7 +46,7 @@ app.post("/register", async (req, res) => {
 });
 
 // get all tasks
-app.get("/task", auth, async (req, res) => {
+app.get("/tasks", auth, async (req, res) => {
   try {
       const tasks = await Task.find({ user: req.user.userId });
       res.json({ tasks }); // Return an object with a tasks property
@@ -58,7 +58,7 @@ app.get("/task", auth, async (req, res) => {
 
 
 // Create a new task
-app.post("/tasks", auth, async (req, res) => {
+app.post("/task", auth, async (req, res) => {
   const { title, description, priority, deadline } = req.body;
 
   try {

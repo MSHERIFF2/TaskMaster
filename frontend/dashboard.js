@@ -12,7 +12,7 @@ async function fetchTasks() {
     }
 
     try {
-        const response = await fetch(`${API_URL}/task`, {
+        const response = await fetch(`${API_URL}/tasks`, {
             headers: {
                 "Authorization": `Bearer ${token}`,  // Send JWT in the Authorization header
             },
