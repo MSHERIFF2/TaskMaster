@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("./models/User"); // Ensure you have this model defined
 const express = require("express");
-const Task = require("../models/Task");
+const Task = require("./models/Task");
 const auth = require("../middleware/auth");
 
 
@@ -45,7 +45,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-
+// get all tasks
 app.get("/tasks", auth, async (req, res) => {
   try {
       const tasks = await Task.find({ user: req.user.userId });
