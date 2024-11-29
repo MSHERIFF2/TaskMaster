@@ -12,7 +12,7 @@ async function fetchTasks() {
     }
 
     try {
-        const response = await fetch(`${API_URL}/tasks`, {
+        const response = await fetch(`${API_URL}/task`, {
             headers: {
                 "Authorization": `Bearer ${token}`,  // Send JWT in the Authorization header
             },
@@ -152,16 +152,16 @@ async function editTask(taskId) {
     const taskModal = document.getElementById('task-modal');
     const taskForm = document.getElementById('task-form');
     const token = localStorage.getItem("token");
-   
 
-    if (!token ) {
+
+    if (!token) {
         alert("You must be logged in to edit a task.");
         return;
     }
 
     // Fetch the task by ID to pre-fill the modal
     try {
-        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+        const response = await fetch(`${API_URL}/${taskId}`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             },
@@ -190,7 +190,7 @@ async function editTask(taskId) {
                 const updatedDeadline = document.getElementById('task-deadline').value;
 
                 try {
-                    const updateResponse = await fetch(`${API_URL}/tasks/${taskId}`, {
+                    const updateResponse = await fetch(`${API_URL}/${taskId}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -239,7 +239,7 @@ async function deleteTask(taskId) {
     }
     if (window.confirm("Are you sure you want to delete this task?")) {
         try {
-            const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+            const response = await fetch(`${API_URL}/${taskId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
