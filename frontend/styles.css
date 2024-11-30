@@ -161,3 +161,12 @@
         outline: none;
         border-color: #4CAF50;
       }
+      .nav{
+        display: flex;
+        justify-content: space-between;
+      }
+      .nav a{
+        text-decoration: none;
+        font-size: 16px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
