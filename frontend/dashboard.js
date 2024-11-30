@@ -172,7 +172,7 @@ async function editTask(taskId) {
         const response = await fetch(`${API_URL}/edit/${taskId}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
-                "User-ID": userId
+                "User-ID": userId,
             },
         });
         const task = await response.json();
@@ -204,6 +204,7 @@ async function editTask(taskId) {
                     alert("Task updated successfully.");
                     fetchTasks(); // Re-fetch tasks to show updated list
                     taskModal.style.display = 'none'; // Close the modal
+                    resetFormFields();
                 } else {
                     alert(updateData.message || "Error updating task.");
                 }
@@ -216,6 +217,15 @@ async function editTask(taskId) {
         console.error("Error:", err);
         alert("Error fetching task for editing.");
     }
+}
+
+// Reset form fields function
+
+function resetFormFields(){
+    document.getElementById('task-title').value = '';
+  document.getElementById('task-description').value = '';
+  document.getElementById('task-priority').value = '';
+  document.getElementById('task-deadline').value = '';
 }
 // Delete Task
 async function deleteTask(taskId) {
