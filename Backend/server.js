@@ -67,8 +67,13 @@ app.post("/new", auth, async (req, res) => {
     res.status(500).json({ message: "Server error." });
   }
 });
+app.options("/edit/:id", auth, async (req, res) => {
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Authorization, Content-Type");
+  res.send();
+});
 
-app.get("/edit/:id", auth, async (req, res) => {
+app.put("/edit/:id", auth, async (req, res) => {
   try {
     const taskId = req.params.id;
     const task = await Task.findOne({ _id: taskId, user: req.user.userId });
