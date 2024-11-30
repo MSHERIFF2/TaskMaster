@@ -17,11 +17,12 @@ async function fetchTasks() {
                 "Authorization": `Bearer ${token}`,  // Send JWT in the Authorization header
             },
         });
+        console.log("Response status:", response.status)
 
         const data = await response.json();
         console.log('API Response:', data); // Log the API response for debugging
 
-        if (response.ok && data.tasks) {
+        if (response.ok && Array.isArray(data.tasks)) {
             console.log("Response OK and data.tasks is an array");
             renderTasks(data.tasks);  // Render the fetched tasks
         } else {
