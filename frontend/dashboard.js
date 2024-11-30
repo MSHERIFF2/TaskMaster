@@ -159,7 +159,7 @@ async function editTask(taskId) {
     const decodedToken = jwtDecode(token);
     const userId = decodedToken.userId;
     console.log("Token:", token);
-    console.log("User-ID:", userId);
+    console.log("User ID:", userId);
 
 
     if (!token || !userId) {
