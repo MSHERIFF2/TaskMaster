@@ -12,13 +12,12 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: [
-      "http://localhost:5500",
-      "http://127.0.0.1:5500",
-      "https://task-master-seven-steel.vercel.app",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    
+      origin: ['https://task-master-seven-steel.vercel.app'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    
+  
   })
 );
 app.use(express.json());
