@@ -51,7 +51,7 @@ app.get("/tasks", auth, async (req, res) => {
   }
 });
 
-app.post("/tasks", auth, async (req, res) => {
+/* app.post("/tasks", auth, async (req, res) => {
   try {
     const { title, description, priority, deadline } = req.body;
     const newTask = new Task({
@@ -66,7 +66,7 @@ app.post("/tasks", auth, async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Server error." });
   }
-});
+}); */
 
 app.get("/tasks/:id", auth, async (req, res) => {
   try {
