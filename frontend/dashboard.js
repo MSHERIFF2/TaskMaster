@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Render the fetched tasks on the page
 function renderTasks(tasks) {
-console.log("I am here")
+    console.log("I am here")
     if (!Array.isArray(tasks)) {
         console.error("Expected tasks to be an array, but got:", tasks);
         return; // Exit if tasks are not an array
@@ -164,17 +164,15 @@ async function editTask(taskId) {
 
     // Fetch the task by ID to pre-fill the modal
     try {
-        const response = await fetch(`${API_URL}/edit/:${taskId}`, {
+        const response = await fetch(`${API_URL}/edit/${taskId}`, {
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}`,
             },
         });
 
-        const data = await response.json();
+        const task = await response.json();
 
         if (response.ok) {
-            const task = data;  //  data contains the task
-
             // Populate the form with the existing task's details for editing
             document.getElementById('task-title').value = task.title;
             document.getElementById('task-description').value = task.description;
@@ -187,24 +185,21 @@ async function editTask(taskId) {
             taskForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
-                const updatedTitle = document.getElementById('task-title').value;
-                const updatedDescription = document.getElementById('task-description').value;
-                const updatedPriority = document.getElementById('task-priority').value;
-                const updatedDeadline = document.getElementById('task-deadline').value;
+                const updatedTask = {
+                    title: document.getElementById('task-title').value,
+                    description: document.getElementById('task-description').value,
+                    priority: document.getElementById('task-priority').value,
+                    deadline: document.getElementById('task-deadline').value,
+                };
 
                 try {
-                    const updateResponse = await fetch(`${API_URL}/edit/:${taskId}`, {
+                    const updateResponse = await fetch(`${API_URL}/edit/${taskId}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${token}`,
                         },
-                        body: JSON.stringify({
-                            title: updatedTitle,
-                            description: updatedDescription,
-                            priority: updatedPriority,
-                            deadline: updatedDeadline,
-                        }),
+                        body: JSON.stringify(updatedTask),
                     });
 
                     const updateData = await updateResponse.json();
@@ -221,16 +216,14 @@ async function editTask(taskId) {
                     alert("Error updating task.");
                 }
             });
-
         } else {
-            alert(data.message || "Error fetching task for editing.");
+            alert(task.message || "Error fetching task for editing.");
         }
     } catch (err) {
         console.error("Error:", err);
         alert("Error fetching task for editing.");
     }
 }
-
 // Delete Task
 async function deleteTask(taskId) {
     const token = localStorage.getItem("token");
@@ -242,14 +235,14 @@ async function deleteTask(taskId) {
     }
     if (window.confirm("Are you sure you want to delete this task?")) {
         try {
-            const response = await fetch(`${API_URL}/${taskId}`, {
+            const response = await fetch(`${API_URL}/delete/${taskId}`, {
                 method: "DELETE",
                 headers: {
-                  "Authorization": `Bearer ${token}`,
-                  "User-ID": req.user.userId // Use req.user.userId instead of user
+                    "Authorization": `Bearer ${token}`,
+                    //   "User-ID": req.user.userId // Use req.user.userId instead of user
                 },
-                })
-            
+            })
+
             const data = await response.json();
 
             if (response.ok) {
@@ -258,7 +251,7 @@ async function deleteTask(taskId) {
             } else {
                 alert(data.message || "Error deleting task.");
             }
-        }catch (err) {
+        } catch (err) {
             console.error("Error:", err);
             alert("Error deleting task.");
         }

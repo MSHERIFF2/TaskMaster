@@ -75,7 +75,13 @@ app.get("/edit/:id", auth, async (req, res) => {
     if (!task) {
       return res.status(404).json({ message: "Task not found." });
     }
-    res.json(task);
+    // Update the task here
+    task.title = req.body.title
+    task.description = req.body.description;
+    task.priority = req.body.priority
+    task.deadline = req.body.deadline;
+    await task.save();
+    res.json({message: "Task, updated successfully."});
   } catch (err) {
     res.status(500).json({ message: "Server error." });
   }
