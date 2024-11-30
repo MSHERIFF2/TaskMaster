@@ -1,3 +1,6 @@
+// Backend (Express + MongoDB)
+
+// Import necessary packages and models
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -12,155 +15,101 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    
-      origin: ['https://task-master-seven-steel.vercel.app'],
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
-    
-  
-  })
-);
+  origin: ['https://task-master-seven-steel.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 
-// Endpoints
-app.post("/register", async (req, res) => {
+// Routes
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const { username, email, password } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "Email already in use." });
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword });
-    await newUser.save();
-    res.status(201).json({ message: "User registered successfully." });
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.status(200).json({ token });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Error logging in", error: err.message });
   }
 });
 
-app.get("/tasks", auth, async (req, res) => {
-  console.log("Reached route handler");
-  try {
-    const tasks = await Task.find({ user: req.user.userId });
-    console.log("Tasks found:", tasks);
-    res.json(tasks);
-  } catch (err) {
-    res.status(500).json({ message: "Server error." });
-  }
-});
-
+// Create new task
 app.post("/new", auth, async (req, res) => {
+  const { title, description, priority, deadline } = req.body;
+
+  const task = new Task({
+    title,
+    description,
+    priority,
+    deadline,
+    userId: req.userId,
+  });
+
   try {
-    const { title, description, priority, deadline } = req.body;
-    const newTask = new Task({
-      title,
-      description,
-      priority,
-      deadline,
-      user: req.user.userId,
-    });
-    await newTask.save();
-    res.status(201).json(newTask);
+    await task.save();
+    res.status(201).json({ message: "Task created", task });
   } catch (err) {
-    res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Error creating task", error: err.message });
   }
 });
-// app.options("/edit/:id", auth, async (req, res) => {
-//   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-//   res.header("Access-Control-Allow-Headers", "Authorization, Content-Type");
-//   res.send();
-// });
 
-app.put("/edit/:id", auth, async (req, res) => {
+// Get all tasks
+app.get("/tasks", auth, async (req, res) => {
   try {
-    const taskId = req.params.id;
-    const task = await Task.findOne({ _id: taskId, user: req.user.userId });
-    if (!task) {
-      return res.status(404).json({ message: "Task not found." });
-    }
-     // Validate incoming data
-     const { title, description, priority, deadline } = req.body;
-     if (!title || !description || !priority || !deadline) {
-       return res.status(400).json({ message: "Invalid request data." });
-     }
-     // Update the task using Mongoose's update() method
-     const updatedTask = await Task.updateOne({ _id: taskId }, { $set: { title, description, priority, deadline } });
-     if (!updatedTask) {
-       return res.status(500).json({ message: "Failed to update task." });
-     }
-     res.json({ message: "Task updated successfully." });
-   } catch (err) {
-     console.error(err);
-     res.status(500).json({ message: "Server error." });
-   }
+    const tasks = await Task.find({ userId: req.userId });
+    res.status(200).json(tasks);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching tasks", error: err.message });
+  }
 });
 
-app.put("/delete/:id", auth, async (req, res) => {
+// Edit task
+app.put("/edit/:id", auth, async (req, res) => {
+  const { title, description, priority, deadline } = req.body;
+  const taskId = req.params.id;
+
   try {
-    const taskId = req.params.id;
     const task = await Task.findOneAndUpdate(
-      { _id: taskId, user: req.user.userId },
-      req.body,
+      { _id: taskId, userId: req.userId },
+      { title, description, priority, deadline },
       { new: true }
     );
-    if (!task) {
-      return res.status(404).json({ message: "Task not found." });
-    }
-    res.json(task);
+
+    if (!task) return res.status(404).json({ message: "Task not found" });
+    res.status(200).json({ message: "Task updated", task });
   } catch (err) {
-    res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Error updating task", error: err.message });
   }
 });
 
+// Delete task
 app.delete("/tasks/:id", auth, async (req, res) => {
+  const taskId = req.params.id;
+
   try {
-    const taskId = req.params.id;
-    const task = await Task.findOneAndDelete({ _id: taskId, user: req.user.userId });
-    if (!task) {
-      return res.status(404).json({ message: "Task not found." });
-    }
-    res.json({ message: "Task deleted successfully." });
+    const task = await Task.findOneAndDelete({ _id: taskId, userId: req.userId });
+    if (!task) return res.status(404).json({ message: "Task not found" });
+    res.status(200).json({ message: "Task deleted", task });
   } catch (err) {
-    res.status(500).json({ message: "Server error." });
+    res.status(500).json({ message: "Error deleting task", error: err.message });
   }
 });
 
-app.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: "Invalid email or password." });
-    }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(400).json({ message: "Invalid email or password." });
-    }
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(process.env.PORT || 5000, () => {
+      console.log(`Server running on port ${process.env.PORT || 5000}`);
     });
-    res.json({ token, userId: user._id });
-  } catch (err) {
-    res.status(500).json({ message: "Server error." });
-  }
-});
-
-// Testing route
-app.get("/", (req, res) => {
-  res.send("Welcome to Taskmaster API");
-});
-
-// MongoDB connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
   })
-  .then(() => console.log("MongoDB connected successfully"))
-  .catch((err) => console.error("MongoDB connection error:", err));
-
+  .catch(err => console.log("Error connecting to MongoDB:", err));
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
