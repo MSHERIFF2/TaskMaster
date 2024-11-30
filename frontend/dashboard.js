@@ -163,66 +163,53 @@ async function editTask(taskId) {
     }
 
     // Fetch the task by ID to pre-fill the modal
-    try {
-        const response = await fetch(`${API_URL}/edit/${taskId}`, {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            },
+try {
+    const response = await fetch(`${API_URL}/edit/${taskId}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    const task = await response.json();
+    // Populate the form with the existing task's details for editing
+    document.getElementById('task-title').value = task.title;
+    document.getElementById('task-description').value = task.description;
+    document.getElementById('task-priority').value = task.priority;
+    document.getElementById('task-deadline').value = task.deadline;
+    // Handle form submission to update task
+    taskForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const updatedTask = {
+        title: document.getElementById('task-title').value,
+        description: document.getElementById('task-description').value,
+        priority: document.getElementById('task-priority').value,
+        deadline: document.getElementById('task-deadline').value,
+      };
+      try {
+        const updateResponse = await fetch(`${API_URL}/edit/${taskId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedTask),
         });
-
-        const task = await response.json();
-
-        if (response.ok) {
-            // Populate the form with the existing task's details for editing
-            document.getElementById('task-title').value = task.title;
-            document.getElementById('task-description').value = task.description;
-            document.getElementById('task-priority').value = task.priority;
-            document.getElementById('task-deadline').value = task.deadline;
-
-            taskModal.style.display = 'block';  // Open the modal for editing
-
-            // Handle form submission to update task
-            taskForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const updatedTask = {
-                    title: document.getElementById('task-title').value,
-                    description: document.getElementById('task-description').value,
-                    priority: document.getElementById('task-priority').value,
-                    deadline: document.getElementById('task-deadline').value,
-                };
-
-                try {
-                    const updateResponse = await fetch(`${API_URL}/edit/${taskId}`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`,
-                        },
-                        body: JSON.stringify(updatedTask),
-                    });
-
-                    const updateData = await updateResponse.json();
-
-                    if (updateResponse.ok) {
-                        alert("Task updated successfully.");
-                        fetchTasks();  // Re-fetch tasks to show updated list
-                        taskModal.style.display = 'none';  // Close the modal
-                    } else {
-                        alert(updateData.message || "Error updating task.");
-                    }
-                } catch (err) {
-                    console.error("Error:", err);
-                    alert("Error updating task.");
-                }
-            });
+        const updateData = await updateResponse.json();
+        if (updateResponse.ok) {
+          alert("Task updated successfully.");
+          fetchTasks(); // Re-fetch tasks to show updated list
+          taskModal.style.display = 'none'; // Close the modal
         } else {
-            alert(task.message || "Error fetching task for editing.");
+          alert(updateData.message || "Error updating task.");
         }
-    } catch (err) {
+      } catch (err) {
         console.error("Error:", err);
-        alert("Error fetching task for editing.");
-    }
+        alert("Error updating task.");
+      }
+    });
+  } catch (err) {
+    console.error("Error:", err);
+    alert("Error fetching task for editing.");
+  }
 }
 // Delete Task
 async function deleteTask(taskId) {
