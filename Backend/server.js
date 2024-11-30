@@ -41,8 +41,10 @@ app.post("/register", async (req, res) => {
 });
 
 app.get("/tasks", auth, async (req, res) => {
+  console.log("Reached route handler");
   try {
     const tasks = await Task.find({ user: req.user.userId });
+    console.log("Tasks found:", tasks);
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: "Server error." });
