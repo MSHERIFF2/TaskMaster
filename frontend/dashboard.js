@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 const taskList = document.querySelector(".task-list");
 const API_URL = 'https://backendtaskmaster.onrender.com';  // Update if necessary
 
@@ -155,9 +156,10 @@ async function editTask(taskId) {
     const taskModal = document.getElementById('task-modal');
     const taskForm = document.getElementById('task-form');
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId")
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.userId;
     console.log("Token:", token);
-    console.log("User ID:", userId);
+    console.log("User-ID:", userId);
 
 
     if (!token || !userId) {
