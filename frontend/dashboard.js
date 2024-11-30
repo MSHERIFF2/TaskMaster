@@ -155,9 +155,10 @@ async function editTask(taskId) {
     const taskModal = document.getElementById('task-modal');
     const taskForm = document.getElementById('task-form');
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId")
 
 
-    if (!token) {
+    if (!token || !userId) {
         alert("You must be logged in to edit a task.");
         return;
     }
@@ -167,6 +168,7 @@ try {
   const response = await fetch(`${API_URL}/edit/${taskId}`, {
     headers: {
       "Authorization": `Bearer ${token}`,
+      "User-ID": userId
     },
   });
   const task = await response.json();

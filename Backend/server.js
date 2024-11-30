@@ -68,7 +68,7 @@ app.post("/new", auth, async (req, res) => {
   }
 });
 
-app.put("/edit/:id", auth, async (req, res) => {
+app.get("/edit/:id", auth, async (req, res) => {
   try {
     const taskId = req.params.id;
     const task = await Task.findOne({ _id: taskId, user: req.user.userId });
