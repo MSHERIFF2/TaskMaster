@@ -1,5 +1,3 @@
-// Frontend JavaScript (Client-side)
-
 // Import JWT decode library
 import jwtDecode from 'jwt-decode';
 
@@ -24,20 +22,14 @@ async function fetchTasks() {
       },
     });
 
-    console.log("Response status:", response.status);
-
     const data = await response.json();
-    console.log('API Response:', data); // Log API response for debugging
-
     if (response.ok && Array.isArray(data)) {
-      console.log("Response OK and data.tasks is an array");
       renderTasks(data); // Render the tasks
     } else {
-      console.log("Response not OK or data.tasks is not an array");
       alert(data.message || "Error fetching tasks.");
     }
   } catch (err) {
-    console.error("Error:", err);
+    console.error("Error fetching tasks:", err);
     alert("Error fetching tasks.");
   }
 }
@@ -51,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function renderTasks(tasks) {
   if (!Array.isArray(tasks)) {
     console.error("Expected tasks to be an array, but got:", tasks);
-    return; // Exit if tasks are not an array
+    return;
   }
 
   taskList.innerHTML = ""; // Clear the list before rendering
@@ -71,19 +63,20 @@ function renderTasks(tasks) {
     
     editBtn.classList.add("edit-btn");
     editBtn.textContent = "Edit";
-    editBtn.taskId = task._id;
+    editBtn.dataset.taskId = task._id;
 
     deleteBtn.classList.add("delete-btn");
     deleteBtn.textContent = "Delete";
-    deleteBtn.taskId = task._id;
+    deleteBtn.dataset.taskId = task._id;
 
     taskCard.appendChild(editBtn);
     taskCard.appendChild(deleteBtn);
 
     taskList.appendChild(taskCard);
 
-    editBtn.addEventListener("click", () => editTask(editBtn.taskId));
-    deleteBtn.addEventListener("click", () => deleteTask(deleteBtn.taskId));
+    // Add event listeners for edit and delete buttons
+    editBtn.addEventListener("click", () => editTask(editBtn.dataset.taskId));
+    deleteBtn.addEventListener("click", () => deleteTask(deleteBtn.dataset.taskId));
   });
 }
 
@@ -95,14 +88,14 @@ const taskForm = document.getElementById('task-form');
 
 // Open modal
 addTaskBtn.addEventListener('click', () => {
-  taskModal.style.display = 'flex';
+  taskModal.style.display = 'flex'; // Show modal
   taskModal.style.flexDirection = 'column';
   taskModal.style.alignItems = 'center';
 });
 
 // Close modal
 closeModalBtn.addEventListener('click', () => {
-  taskModal.style.display = 'none';
+  taskModal.style.display = 'none'; // Hide modal
 });
 
 // Handle task form submission (for adding new tasks)
@@ -134,21 +127,20 @@ taskForm.addEventListener('submit', async (e) => {
 
     if (response.ok) {
       alert("Task created successfully.");
-      fetchTasks(); // Re-fetch tasks
+      fetchTasks(); // Re-fetch tasks to update the list
       taskModal.style.display = 'none'; // Close modal
+      resetFormFields();
     } else {
       alert(data.message || "Error creating task.");
     }
   } catch (err) {
-    console.error("Error:", err);
+    console.error("Error creating task:", err);
     alert("Error creating task.");
   }
 });
 
 // Function to edit task
 async function editTask(taskId) {
-  const taskModal = document.getElementById('task-modal');
-  const taskForm = document.getElementById('task-form');
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -164,48 +156,52 @@ async function editTask(taskId) {
     });
 
     const task = await response.json();
-    document.getElementById('task-title').value = task.title;
-    document.getElementById('task-description').value = task.description;
-    document.getElementById('task-priority').value = task.priority;
-    document.getElementById('task-deadline').value = task.deadline;
+    if (response.ok) {
+      document.getElementById('task-title').value = task.title;
+      document.getElementById('task-description').value = task.description;
+      document.getElementById('task-priority').value = task.priority;
+      document.getElementById('task-deadline').value = task.deadline;
 
-    taskForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+      taskForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-      const updatedTask = {
-        title: document.getElementById('task-title').value,
-        description: document.getElementById('task-description').value,
-        priority: document.getElementById('task-priority').value,
-        deadline: document.getElementById('task-deadline').value,
-      };
+        const updatedTask = {
+          title: document.getElementById('task-title').value,
+          description: document.getElementById('task-description').value,
+          priority: document.getElementById('task-priority').value,
+          deadline: document.getElementById('task-deadline').value,
+        };
 
-      try {
-        const updateResponse = await fetch(`${API_URL}/edit/${taskId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-          },
-          body: JSON.stringify(updatedTask),
-        });
+        try {
+          const updateResponse = await fetch(`${API_URL}/edit/${taskId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(updatedTask),
+          });
 
-        const updateData = await updateResponse.json();
+          const updateData = await updateResponse.json();
 
-        if (updateResponse.ok) {
-          alert("Task updated successfully.");
-          fetchTasks(); // Re-fetch tasks
-          taskModal.style.display = 'none'; // Close modal
-          resetFormFields();
-        } else {
-          alert(updateData.message || "Error updating task.");
+          if (updateResponse.ok) {
+            alert("Task updated successfully.");
+            fetchTasks(); // Re-fetch tasks
+            taskModal.style.display = 'none'; // Close modal
+            resetFormFields();
+          } else {
+            alert(updateData.message || "Error updating task.");
+          }
+        } catch (err) {
+          console.error("Error updating task:", err);
+          alert("Error updating task.");
         }
-      } catch (err) {
-        console.error("Error:", err);
-        alert("Error updating task.");
-      }
-    });
+      });
+    } else {
+      alert(task.message || "Error fetching task for editing.");
+    }
   } catch (err) {
-    console.error("Error:", err);
+    console.error("Error fetching task:", err);
     alert("Error fetching task for editing.");
   }
 }
@@ -245,7 +241,7 @@ async function deleteTask(taskId) {
         alert(data.message || "Error deleting task.");
       }
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error deleting task:", err);
       alert("Error deleting task.");
     }
   }
