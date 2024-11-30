@@ -245,9 +245,8 @@ async function deleteTask(taskId) {
                   "Authorization": `Bearer ${token}`,
                   "User-ID": req.user.userId // Use req.user.userId instead of user
                 },
-                },
-            });
-
+                })
+            
             const data = await response.json();
 
             if (response.ok) {
@@ -256,7 +255,7 @@ async function deleteTask(taskId) {
             } else {
                 alert(data.message || "Error deleting task.");
             }
-        } catch (err) {
+        }catch (err) {
             console.error("Error:", err);
             alert("Error deleting task.");
         }
