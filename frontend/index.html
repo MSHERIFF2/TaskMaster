@@ -1,22 +1,27 @@
-
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TaskMaster</title>
-  <link rel="stylesheet" href="assets/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-  <div id="app">
-    <h1>TaskMaster</h1>
-    <!-- Login, Register, Task Management Form -->
-    <button id="createTaskButton">Create Task</button>
-    <!-- Add Task Form, Task List -->
-  </div>
+    <div id="app">
+        <h1>Welcome to TaskMaster</h1>
+        <button id="loginButton">Login</button>
+        <button id="registerButton">Register</button>
+    </div>
 
-  <script src="js/api.js"></script>
-  <script src="js/app.js"></script>
+    <script>
+        document.getElementById('loginButton').addEventListener('click', () => {
+            window.location.href = './login.html';  // Redirect to Login page
+        });
+
+        document.getElementById('registerButton').addEventListener('click', () => {
+            window.location.href = './register.html';  // Redirect to Register page
+        });
+    </script>
 </body>
 </html>
-            

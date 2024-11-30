@@ -1,0 +1,135 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TaskMaster</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Dashboard</h1>
+        <button id="logoutButton">Logout</button>
+
+        <h2>Task Management</h2>
+        <form id="taskForm">
+            <input type="text" id="taskTitle" placeholder="Task title" required>
+            <textarea id="taskDescription" placeholder="Task description" required></textarea>
+            <input type="date" id="taskDeadline" required>
+            <select id="taskPriority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <h3>Task List</h3>
+        <div id="taskList"></div>
+
+        <input type="text" id="searchBar" placeholder="Search tasks..." onkeyup="filterTasks()">
+    </div>
+
+    <script>
+        // Handle logout
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';  // Redirect to Login
+        });
+
+        // Add task
+        document.getElementById('taskForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const taskData = {
+                title: document.getElementById('taskTitle').value,
+                description: document.getElementById('taskDescription').value,
+                deadline: document.getElementById('taskDeadline').value,
+                priority: document.getElementById('taskPriority').value
+            };
+
+            const response = await fetch('http://localhost:5000/api/tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify(taskData)
+            });
+
+            if (response.ok) {
+                const newTask = await response.json();
+                displayTasks();  // Refresh task list
+            } else {
+                alert('Failed to add task');
+            }
+        });
+
+        // Display tasks
+        const displayTasks = async () => {
+            const response = await fetch('http://localhost:5000/api/tasks', {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+            });
+
+            if (response.ok) {
+                const tasks = await response.json();
+                const taskList = document.getElementById('taskList');
+                taskList.innerHTML = '';  // Clear current tasks
+
+                tasks.forEach(task => {
+                    const taskDiv = document.createElement('div');
+                    taskDiv.innerHTML = `
+                        <h4>${task.title}</h4>
+                        <p>${task.description}</p>
+                        <p>Deadline: ${task.deadline}</p>
+                        <p>Priority: ${task.priority}</p>
+                        <button onclick="editTask(${task._id})">Edit</button>
+                        <button onclick="deleteTask(${task._id})">Delete</button>
+                    `;
+                    taskList.appendChild(taskDiv);
+                });
+            }
+        };
+
+        // Edit task
+        const editTask = async (taskId) => {
+            // Implement edit functionality (similar to creating a task)
+        };
+
+        // Delete task
+        const deleteTask = async (taskId) => {
+            const response = await fetch(`http://localhost:5000/api/tasks/${taskId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+            });
+
+            if (response.ok) {
+                displayTasks();  // Refresh task list
+            } else {
+                alert('Failed to delete task');
+            }
+        };
+
+        // Filter tasks
+        const filterTasks = () => {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const tasks = document.querySelectorAll('#taskList div');
+
+            tasks.forEach(task => {
+                const title = task.querySelector('h4').textContent.toLowerCase();
+                const description = task.querySelector('p').textContent.toLowerCase();
+
+                if (title.includes(query) || description.includes(query)) {
+                    task.style.display = 'block';
+                } else {
+                    task.style.display = 'none';
+                }
+            });
+        };
+
+        // Load tasks on dashboard page load
+        window.onload = displayTasks;
+    </script>
+</body>
+</html>
