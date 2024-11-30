@@ -1,5 +1,5 @@
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://taskmaster-6ds9.onrender.com/api';
 
 const fetchTasks = async () => {
   const response = await fetch(`${API_URL}/tasks`, {

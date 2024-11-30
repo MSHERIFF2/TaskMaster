@@ -3,7 +3,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-
+// Allow only requests from https://taskmaster-6ds9.onrender.com
+const corsOptions = {
+  origin: 'https://taskmaster-6ds9.onrender.com',
+  methods: 'GET, POST, PUT, DELETE', // specify the allowed methods if needed
+};
 // Import routes
 const taskRoutes = require('./routes/taskRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -13,7 +17,9 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Connect to MongoDB
