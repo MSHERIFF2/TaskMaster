@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 // Allow only requests from https://taskmaster-6ds9.onrender.com
 const corsOptions = {
-  origin: 'https://taskmaster-6ds9.onrender.com',
+  origin: 'https://task-master-seven-steel.vercel.app/',
   methods: 'GET, POST, PUT, DELETE', // specify the allowed methods if needed
 };
 // Import routes
