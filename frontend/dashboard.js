@@ -115,7 +115,7 @@ taskForm.addEventListener('submit', async (e) => {
     }
 
     try {
-        const response = await fetch(`${API_URL}/tasks`, {
+        const response = await fetch(`${API_URL}/new`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
