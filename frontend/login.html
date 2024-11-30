@@ -1,0 +1,45 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TaskMaster</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Enter email" required>
+            <input type="password" id="password" placeholder="Enter password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="/register.html">Register</a></p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Send login data to backend
+            const response = await fetch('http://localhost:5000/api/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('token', data.token);  // Store the JWT
+                window.location.href = '/dashboard.html';  // Redirect to Dashboard
+            } else {
+                alert('Login failed');
+            }
+        });
+    </script>
+</body>
+</html>
