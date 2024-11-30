@@ -68,7 +68,7 @@ app.post("/new", auth, async (req, res) => {
   }
 });
 
-app.get("/tasks/:id", auth, async (req, res) => {
+app.get("/edit/:id", auth, async (req, res) => {
   try {
     const taskId = req.params.id;
     const task = await Task.findOne({ _id: taskId, user: req.user.userId });
@@ -81,7 +81,7 @@ app.get("/tasks/:id", auth, async (req, res) => {
   }
 });
 
-app.put("/tasks/:id", auth, async (req, res) => {
+app.put("/delete/:id", auth, async (req, res) => {
   try {
     const taskId = req.params.id;
     const task = await Task.findOneAndUpdate(

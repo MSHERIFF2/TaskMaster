@@ -164,7 +164,7 @@ async function editTask(taskId) {
 
     // Fetch the task by ID to pre-fill the modal
     try {
-        const response = await fetch(`${API_URL}/${taskId}`, {
+        const response = await fetch(`${API_URL}/edit/:${taskId}`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             },
@@ -193,7 +193,7 @@ async function editTask(taskId) {
                 const updatedDeadline = document.getElementById('task-deadline').value;
 
                 try {
-                    const updateResponse = await fetch(`${API_URL}/${taskId}`, {
+                    const updateResponse = await fetch(`${API_URL}/edit/:${taskId}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
