@@ -1,6 +1,6 @@
 // API base URL for backend
 
-const API_URL = 'https://taskmaster-lwpe.onrender.com';  // Update if necessary
+const API_URL = 'https://taskmaster-uddf.onrender.com/';  // Update if necessary
 
 
 // Register Page

@@ -1,5 +1,5 @@
 const taskList = document.querySelector(".task-list");
-const API_URL = 'https://taskmaster-lwpe.onrender.com';  // Update if necessary
+const API_URL = 'https://taskmaster-uddf.onrender.com/';  // Update if necessary
 
 // Fetch user tasks from the backend
 async function fetchTasks() {
