@@ -22,9 +22,9 @@ async function fetchTasks() {
         const data = await response.json();
         console.log('API Response:', data); // Log the API response for debugging
 
-        if (response.ok && Array.isArray(data.tasks)) {
+        if (response.ok && Array.isArray(data)) {
             console.log("Response OK and data.tasks is an array");
-            renderTasks(data.tasks);  // Render the fetched tasks
+            renderTasks(data);  // Render the fetched tasks
         } else {
             console.log("Response not OK or data.tasks is not an array");
             alert(data.message || "Error fetching tasks.");
