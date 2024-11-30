@@ -80,16 +80,21 @@ app.put("/edit/:id", auth, async (req, res) => {
     if (!task) {
       return res.status(404).json({ message: "Task not found." });
     }
-    // Update the task here
-    task.title = req.body.title
-    task.description = req.body.description;
-    task.priority = req.body.priority
-    task.deadline = req.body.deadline;
-    await task.save();
-    res.json({message: "Task, updated successfully."});
-  } catch (err) {
-    res.status(500).json({ message: "Server error." });
-  }
+     // Validate incoming data
+     const { title, description, priority, deadline } = req.body;
+     if (!title || !description || !priority || !deadline) {
+       return res.status(400).json({ message: "Invalid request data." });
+     }
+     // Update the task using Mongoose's update() method
+     const updatedTask = await Task.updateOne({ _id: taskId }, { $set: { title, description, priority, deadline } });
+     if (!updatedTask) {
+       return res.status(500).json({ message: "Failed to update task." });
+     }
+     res.json({ message: "Task updated successfully." });
+   } catch (err) {
+     console.error(err);
+     res.status(500).json({ message: "Server error." });
+   }
 });
 
 app.put("/delete/:id", auth, async (req, res) => {
