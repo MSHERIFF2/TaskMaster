@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Render the fetched tasks on the page
 function renderTasks(tasks) {
-
+console.log("I am here")
     if (!Array.isArray(tasks)) {
         console.error("Expected tasks to be an array, but got:", tasks);
         return; // Exit if tasks are not an array
