@@ -42,16 +42,16 @@ app.post("/register", async (req, res) => {
   }
 });
 
-/* app.get("/tasks", auth, async (req, res) => {
+app.get("/tasks", auth, async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user.userId });
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: "Server error." });
   }
-}); */
+});
 
-app.post("/tasks", auth, async (req, res) => {
+app.post("/new", auth, async (req, res) => {
   try {
     const { title, description, priority, deadline } = req.body;
     const newTask = new Task({
