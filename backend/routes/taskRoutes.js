@@ -8,10 +8,10 @@ const router = express.Router();
 router.post('/create', protect, createTask);
 router.get('/test', Test)
 router.get('/tasks', getTasks)
-router.put('/update', updateTask)
+router.put('/update/:taskId', updateTask)
 router.delete('/del', deleteTask)
 
-// Other routes for update, delete, getTasks, etc.
+
 
 module.exports = router;
                 
