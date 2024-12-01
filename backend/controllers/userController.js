@@ -18,6 +18,7 @@ exports.registerUser = async (req, res) => {
       email,
       password: hashedPassword
     });
+    console.log(hashedPassword)
 
     await newUser.save();
 
@@ -36,8 +37,11 @@ exports.loginUser = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
+    console.log(`User found: ${user.email}`);
+    console.log('Stored hashed password:', user.password); // Log the stored hashed password
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password.trim(), user.password);
+    console.log('Password comparison result:', isMatch);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }

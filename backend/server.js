@@ -3,9 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-// Allow only requests from https://taskmaster-6ds9.onrender.com
+
 const corsOptions = {
-  origin: 'https://task-master-seven-steel.vercel.app/',
+  origin: ['https://task-master-seven-steel.vercel.app/', 'http://localhost:5000', 'http://127.0.0.1:5000'],
   methods: 'GET, POST, PUT, DELETE', // specify the allowed methods if needed
 };
 // Import routes
@@ -13,7 +13,7 @@ const taskRoutes = require('./routes/taskRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 dotenv.config();
-
+console.log(process.env.JWT_SECRET)
 const app = express();
 
 // Middleware
